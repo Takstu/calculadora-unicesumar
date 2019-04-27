@@ -10,12 +10,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import br.edu.unicesumar.dao.ProdutoDao;
+import br.edu.unicesumar.model.ApiResponse;
 import br.edu.unicesumar.model.Produto;
 
 @Path("/json/produto")
 public class ProdutoService {
 
-	private ProdutoDao dao = new ProdutoDao();
+	ProdutoDao dao = new ProdutoDao();
 	
 	@GET
 	@Path("/get")
@@ -46,11 +47,15 @@ public class ProdutoService {
 	@GET
 	@Path("/listas")
 	@Produces("application/json")
-	public Response listar() {
+	public ApiResponse listar() {
 
 		List<Produto> produtos = dao.list();
-		String resultado = "quantidade de produtos: "+ produtos.size();
-		return Response.status(201).entity(resultado).build();
+		
+		ApiResponse apiResponse = new ApiResponse();
+		apiResponse.setProdutos(produtos);
+
+		return apiResponse;
+		
 
 	}
 
